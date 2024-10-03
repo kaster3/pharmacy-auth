@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 import uvicorn
 
-from settings import get_settings
+from core.settings import get_settings
 
 
 @asynccontextmanager
