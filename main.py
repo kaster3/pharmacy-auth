@@ -1,12 +1,26 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 import uvicorn
 
+from settings import get_settings
 
-app = FastAPI()
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    yield
+
+application = FastAPI()
 
 if __name__ == "__main__":
+    settings = get_settings()
     uvicorn.run(
-        app=app,
+        app=settings.conf.app,
+        host=settings.conf.host,
+        port=settings.conf.port,
+        workers=settings.conf.workers,
+        reload=settings.conf.reload,
     )
+
+
 
