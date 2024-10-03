@@ -1,8 +1,16 @@
 from typing import Callable
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from pydantic import BaseModel
+from pydantic import BaseModel, PostgresDsn
 from dishka import Scope, Provider, make_container
+
+
+class DataBase(BaseModel):
+    url: PostgresDsn
+    echo: bool
+    echo_pool: bool
+    pool_size: int
+    max_overflow: int
 
 
 class LaunchConfig(BaseModel):
@@ -21,6 +29,7 @@ class Settings(BaseSettings):
         env_prefix="FASTAPI__"
     )
     conf: LaunchConfig
+    db: DataBase
 
 
 def get_settings() -> Settings:
