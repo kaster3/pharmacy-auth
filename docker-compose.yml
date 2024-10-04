@@ -1,7 +1,7 @@
 services:
   db:
       image: postgres:16.2
-      container_name: 'db'
+      container_name: 'pharmacy_users_db'
       restart: always
       shm_size: 128mb
       environment:
@@ -11,4 +11,8 @@ services:
       ports:
         - "5432:5432"
       volumes:
-        - db_data:/var/lib/postgresql/data
+        - db:/var/lib/postgresql/data
+
+volumes:
+  db:
+    driver: local
