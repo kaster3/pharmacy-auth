@@ -1,8 +1,9 @@
-from typing import Callable
-
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import BaseModel, PostgresDsn
-from dishka import Scope, Provider, make_container
+
+
+class LoggingConfig(BaseModel):
+    format: str
 
 
 class DataBase(BaseModel):
@@ -30,20 +31,11 @@ class Settings(BaseSettings):
     )
     conf: LaunchConfig
     db: DataBase
+    log: LoggingConfig
 
 
 def get_settings() -> Settings:
     return Settings()
-
-
-def get_provider() -> Provider:
-    return Provider()
-
-
-def scope_provider(provider: Provider, func: Callable, scope: Scope):
-    provider.provide(func, scope=scope)
-
-
 
 
 
