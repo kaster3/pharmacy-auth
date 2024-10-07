@@ -2,6 +2,12 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import BaseModel, PostgresDsn
 
 
+class AccessToken(BaseModel):
+    lifetime_seconds: int
+    reset_password_token_secret: str
+    verification_token_secret: str
+
+
 class LoggingConfig(BaseModel):
     format: str
 
@@ -40,6 +46,7 @@ class Settings(BaseSettings):
     conf: LaunchConfig
     db: DataBase
     log: LoggingConfig
+    access_token: AccessToken
 
 
 def get_settings() -> Settings:
