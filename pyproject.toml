@@ -19,6 +19,9 @@ fast-depends = "^2.4.11"
 fastapi-users = {extras = ["sqlalchemy"], version = "^13.0.0"}
 
 
+[tool.poetry.group.dev.dependencies]
+black = "^24.8.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
