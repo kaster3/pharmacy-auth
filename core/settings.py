@@ -2,6 +2,23 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import BaseModel, PostgresDsn
 
 
+class ApiV1Prefix(BaseModel):
+    prefix: str = "/v1"
+    auth: str = "/auth"
+    users: str = "/user"
+
+
+class ApiPrefix(BaseModel):
+    prefix: str = "/api"
+    v1: ApiV1Prefix = ApiV1Prefix()
+
+    @property
+    def bearer_token_url(self) -> str:
+        parts = (self.prefix, self.v1.prefix, self.v1.auth, "/login")
+        path = "".join(parts)
+        return path[1:]
+
+
 class AccessToken(BaseModel):
     lifetime_seconds: int
     reset_password_token_secret: str
@@ -47,6 +64,7 @@ class Settings(BaseSettings):
     db: DataBase
     log: LoggingConfig
     access_token: AccessToken
+    api: ApiPrefix = ApiPrefix()
 
 
 def get_settings() -> Settings:
