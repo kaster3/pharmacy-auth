@@ -15,6 +15,6 @@ router.include_router(
     router=fastapi_users.get_users_router(
         UserRead,
         UserCreate,
-        # requires_verification=True,
+        requires_verification=True,
     ),
 )
