@@ -17,6 +17,7 @@ alembic = "^1.13.3"
 pytest = "^8.3.3"
 fast-depends = "^2.4.11"
 fastapi-users = {extras = ["sqlalchemy"], version = "^13.0.0"}
+orjson = "^3.10.7"
 
 
 [tool.poetry.group.dev.dependencies]
