@@ -7,8 +7,7 @@ from fast_depends import inject, Depends
 from fastapi.responses import ORJSONResponse
 
 from core.settings import get_settings, Settings
-from api.api_v1.auth.auth import router as auth_router
-from api.api_v1.auth.users import router as users_router
+from api.api_v1.auth import router as user_auth_router
 
 
 @inject
@@ -20,11 +19,15 @@ async def lifespan(app: FastAPI, settings: Settings = Depends(get_settings)):
     )
     logging.info("Application starts successfully!")
     yield
+    logging.info("Application ends successfully!")
 
 
-application = FastAPI(default_response_class=ORJSONResponse, lifespan=lifespan)
+application = FastAPI(
+    default_response_class=ORJSONResponse,
+    lifespan=lifespan,
+)
 
-for router in (auth_router, users_router):
+for router in (user_auth_router,):
     application.include_router(
         router=router,
     )
