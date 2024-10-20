@@ -7,7 +7,7 @@ from core.settings import settings
 class LoggerSetup:
 
     def __init__(self) -> None:
-        self.logger = logging.getLogger("")
+        self.logger = logging.getLogger(__name__)
         self.setup_logging()
 
     def setup_logging(self):
