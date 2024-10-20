@@ -22,5 +22,5 @@ filebeat.inputs:
 
 # Имя сервиса Elasticsearch в docker-compose
 output.elasticsearch:
-  hosts: ["http://els2:9200"]
+  hosts: ["http://elasticsearch:9200"]
   index: "auth-pharmacy"
