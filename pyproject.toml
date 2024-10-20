@@ -1,14 +1,9 @@
 [tool.poetry]
-name = "pharmacy"
-version = "0.1.0"
-description = ""
-authors = ["Fedorov Semen <FedorovSemen28@yandex.ru>"]
-readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12"
 fastapi = "^0.115.0"
-uvicorn = {extras = ["standart"], version = "^0.31.0"}
 pydantic = {extras = ["email"], version = "^2.9.2"}
 pydantic-settings = "^2.5.2"
 sqlalchemy = {extras = ["asyncio"], version = "^2.0.35"}
@@ -18,6 +13,9 @@ pytest = "^8.3.3"
 fast-depends = "^2.4.11"
 fastapi-users = {extras = ["sqlalchemy"], version = "^13.0.0"}
 orjson = "^3.10.7"
+aiosmtplib = "^3.0.2"
+gunicorn = "^23.0.0"
+uvicorn = {extras = ["standard"], version = "^0.32.0"}
 
 
 [tool.poetry.group.dev.dependencies]
