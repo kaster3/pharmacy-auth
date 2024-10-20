@@ -1,8 +1,7 @@
 services:
     auth_pharmacy_node1:
-      container_name: auth_pharmacy_node3
-      build:
-        dockerfile: ./Dockerfile
+      container_name: auth_pharmacy_node1
+      image: kastter/pharmacy_auth:latest
       command:
         - "make"
         - "run"
@@ -15,9 +14,8 @@ services:
         - pharmacy
 
     auth_pharmacy_node2:
-      container_name: auth_pharmacy_node4
-      build:
-        dockerfile: ./Dockerfile
+      container_name: auth_pharmacy_node2
+      image: kastter/pharmacy_auth:latest
       command:
         - "make"
         - "run"
@@ -55,7 +53,7 @@ services:
         - gateway
 
     gateway:
-      container_name: gateway2
+      container_name: gateway
       image: nginx:latest
       volumes:
         - /opt/homebrew/etc/nginx/gateway.conf:/etc/nginx/nginx.conf  # Конфигурация для Gateway
@@ -69,7 +67,7 @@ services:
 
 
     elasticsearch:
-      container_name: els2
+      container_name: elasticsearch
       image: elasticsearch:8.11.1
       ports:
         - 9200:9200
@@ -81,7 +79,7 @@ services:
 
 
     kibana:
-      container_name: kibana2
+      container_name: kibana
       image: kibana:8.11.1
       depends_on:
         - elasticsearch
@@ -92,7 +90,7 @@ services:
 
     filebeat:
       image: elastic/filebeat:8.10.0
-      container_name: pharmacy_auth_filebeat2
+      container_name: pharmacy_auth_filebeat
       volumes:
         - ./logs:/usr/share/filebeat/logs:ro
         - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro # :ro - read only
