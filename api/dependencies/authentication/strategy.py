@@ -1,22 +1,12 @@
-from typing import Annotated
-
-from fastapi import Depends
-from fastapi_users.authentication.strategy.db import DatabaseStrategy
+from fastapi_users.authentication import JWTStrategy
 
 from core import settings
-from api.dependencies.authentication.access_tokens import get_access_token_db
-
-from core import AccessToken
-from fastapi_users.authentication.strategy.db import AccessTokenDatabase
 
 
-def get_database_strategy(
-    access_token_db: Annotated[
-        AccessTokenDatabase[AccessToken],
-        Depends(get_access_token_db),
-    ],
-) -> DatabaseStrategy:
-    return DatabaseStrategy(
-        database=access_token_db,
-        lifetime_seconds=settings.access_token.lifetime_seconds,
+def get_jwt_strategy() -> JWTStrategy:
+    return JWTStrategy(
+        secret=settings.jwt_token.private_key.read_text(),
+        lifetime_seconds=settings.jwt_token.lifetime_seconds,
+        algorithm="RS256",
+        public_key=settings.jwt_token.public_key.read_text(),
     )
