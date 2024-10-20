@@ -6,16 +6,21 @@ from fastapi import Response, Request
 from fastapi_users import BaseUserManager, IntegerIDMixin, models
 
 from core import User
+
 from core import settings
-from core.types.user_id import UserIdType
+from core.my_types.user_id import UserIdType
+from core.authentication.mail_manager import MailClient
+from api.dependencies.authentication.mail_manager import get_email_client
 
 
 log = logging.getLogger(__name__)
 
 
 class UserManager(IntegerIDMixin, BaseUserManager[User, UserIdType]):
-    reset_password_token_secret = settings.access_token.reset_password_token_secret
-    verification_token_secret = settings.access_token.verification_token_secret
+    reset_password_token_secret = (
+        settings.verification_token.reset_password_token_secret
+    )
+    verification_token_secret = settings.verification_token.verification_token_secret
 
     async def on_after_register(
         self,
@@ -37,6 +42,13 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, UserIdType]):
             "Verification requested for user %r. Verification token: %r",
             user.id,
             token,
+        )
+        mail_client: MailClient = get_email_client()
+
+        await mail_client.send_email_task(
+            to=user.email,
+            subject="Link to verification",
+            text=f"http://127.0.0.1:8000/verify?token={token}",
         )
 
     async def on_after_verify(
@@ -70,3 +82,9 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, UserIdType]):
             user.id,
         )
 
+        mail_client: MailClient = get_email_client()
+        await mail_client.send_email_task(
+            to=user.email,
+            subject="Welcome message",
+            text="Welcome to our service!",
+        )

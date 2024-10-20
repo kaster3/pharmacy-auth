@@ -1,6 +1,6 @@
 from fastapi_users import schemas
 
-from core.types import UserIdType
+from core.my_types import UserIdType
 
 
 class UserCreate(schemas.BaseUserCreate):
