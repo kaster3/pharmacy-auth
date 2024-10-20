@@ -1,5 +1,9 @@
+from pathlib import Path
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import BaseModel, PostgresDsn
+
+BASE_DIR = Path(__file__).parent.parent
 
 
 class ApiV1Prefix(BaseModel):
@@ -19,14 +23,27 @@ class ApiPrefix(BaseModel):
         return path[1:]
 
 
-class AccessToken(BaseModel):
+class VerificationToken(BaseModel):
     lifetime_seconds: int
     reset_password_token_secret: str
     verification_token_secret: str
 
 
+class JWTToken(BaseModel):
+    lifetime_seconds: int
+    private_key: Path = BASE_DIR / "certs" / "jwt-private.pem"
+    public_key: Path = BASE_DIR / "certs" / "jwt-public.pem"
+
+
 class LoggingConfig(BaseModel):
     format: str
+
+
+class EmailConfig(BaseModel):
+    from_email: str
+    smtp_server: str
+    smtp_port: int  # 465 SSL, 587 TLS
+    smtp_password: str
 
 
 class DataBase(BaseModel):
@@ -58,21 +75,15 @@ class Settings(BaseSettings):
         env_file=(".env.template", ".env"),
         case_sensitive=False,
         env_nested_delimiter="__",
-        env_prefix="FASTAPI__"
+        env_prefix="FASTAPI__",
     )
     conf: LaunchConfig
     db: DataBase
     log: LoggingConfig
-    access_token: AccessToken
+    verification_token: VerificationToken
+    jwt_token: JWTToken
     api: ApiPrefix = ApiPrefix()
+    email: EmailConfig
 
 
-def get_settings() -> Settings:
-    return Settings()
-
-
-settings = get_settings()
-
-
-
-
+settings = Settings()
